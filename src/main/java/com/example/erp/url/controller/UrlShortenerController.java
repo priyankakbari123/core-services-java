@@ -30,6 +30,7 @@ public class UrlShortenerController {
         }
     }
 
+    //EXAMPLE OF CACHE
     @GetMapping(value ="/fetch/url/all",produces = "application/json")
     public List<UrlShortener> getUrls()throws Exception{
         try{

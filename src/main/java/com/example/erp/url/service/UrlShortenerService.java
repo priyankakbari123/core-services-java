@@ -21,7 +21,6 @@ public class UrlShortenerService {
     @Autowired
     CacheService cacheService;
 
-
     public UrlShortener shorUrl(String url) throws Exception {
         UrlShortener urlShortener = new UrlShortener();
         urlShortener.setUrl(url);
@@ -36,14 +35,15 @@ public class UrlShortenerService {
     }
 
     public List<UrlShortener> urls() throws Exception {
-        List<UrlShortener> urls = (List<UrlShortener>) cacheService.getListValueFromCache("URLS");
-        if (urls != null) {
+        List<UrlShortener> urls = cacheService.getUrls("URLS");
+        if (urls != null && !urls.isEmpty()) {
             System.out.println("FROM CACHE");
-            return urls;
+            cacheService.removeUrls("URLS");
+            return new ArrayList<>();
         }
         urls = urlShortenerRepository.findAll();
-        cacheService.putValueInCache("URLS", urls);
-        return urls;
+        cacheService.addUrls(urls, "URLS");
+        return new ArrayList<>();
     }
 
     private String hash(String value) throws Exception {
